@@ -11,6 +11,62 @@ var player_turn int
 var playing bool
 var passed_turn bool
 
+func GetNeighbors(x int, y int) ([4]int, [4][2]int) {
+	/*
+	Returns neighbors in the form (Ltype,Rtype,Utype,Dtype),((Lx,Ly),(Rx,Ry),(Ux,Uy),(Dx,Dy))
+	Type options:
+	edge - 5  (This is 5 simply because 5 is not used yet elsewhere, and is less likely to get confused
+	player - Players #
+	opponent - Opps #
+	free - 0
+	*/
+	var Type [4]int
+	var Loc [4][2]int
+
+	itercheck := [2]int{-1,1}
+	iterchecky := [2]int{1,-1}
+
+	for indx, elemx := range itercheck{
+		if board_dim - 1 >= x + elemx >= 0 {
+			Loc[indx][0] = x + elemx
+			Loc[indx][1] = y
+			Type[indx] = Board[x+elemx][y]
+		}
+	}
+	for indy, elemy := range iterchecky{
+		if board_dim - 1 >= y + elemy >= 0 {
+			Loc[indy+2][0] = x
+			Loc[indy+2][1] = y + elemy
+			Type[indy+2] = Board[x][y+elemy]
+		}
+	}
+
+	}
+	// Handle edges/corners
+	if x == 0 {
+		Type[0] = 5
+		Loc[0][0] = 99
+		Loc[0][1] = 99
+	}
+	if x == board_dim - 1 {
+		Type[1] = 5
+		Loc[1][0] = 99
+		Loc[1][1] = 99
+	}
+	if y == 0 {
+		Type[2] = 5
+		Loc[2][1] = 99
+		Loc[2][1] = 99
+	}
+	if y == board_dim - 1 {
+		Type[3] = 5
+		Loc [3][1] = 99
+		Loc [3][1] = 99
+	}
+
+	return Type, Loc
+}
+
 func Check_Captures() {
 	//Will check if the given move has captured any spaces and alter board as necessary
 }
