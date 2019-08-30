@@ -49,6 +49,10 @@ func Boardchar() string {
 
 }
 
+func PrintBoard() {
+	fmt.Println(Boardchar())
+}
+
 func ValidMove(x, y int) bool {
 	if x > board_dim-1 || x < 0 || y > board_dim-1 || hoz < 0 {
 		return false
