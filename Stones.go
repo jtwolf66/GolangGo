@@ -50,17 +50,16 @@ func Player_Selection(player int) {
 			}
 		}
 	}
-	
+
 
 	// Switch player state
 	if player == 1 {
 		player_turn = 2}
 	if player == 2 {
 		player_turn = 1}
-	}
 	return
-
 }
+
 
 func main() {
 	fmt.Println("Welcome to Golang Go!")
