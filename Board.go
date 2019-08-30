@@ -32,8 +32,6 @@ func Boardchar() string {
 		0: "=" // Empty Spaces
 		1: "X" // Player 1 stone
 		2: "O" // Player 2 stone
-		3: "x"  // Player 1 capture
-		4: "o" // Player 2 capture
 	}
 	board_str := ""
 	for i := 0; i < board_dim; i++ {
