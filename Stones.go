@@ -29,17 +29,19 @@ func Player_Selection(player int) {
 	fmt.Printf("Player %d's move (ex: a5): \n",player)
 	input := input_reader.ReadString('\n')
 	fmt.Println()
+
 	// End game if the opponent quits
 	if strings.HasPrefix(strings.ToLower(input), "quit") {
 		playing = false
 		fmt.Printf("Player %d resigns. Opponent wins!", player)
 		return
 	}
+	// Check if both players have skipped their turn, ending the game
 	if strings.HasPrefix(strings.ToLower(input), "pass") {
 		if passed_turn == true {
 			draw, vic, points := Check_Points()
 			if draw == true {
-				fmt.Printf("Both Players have passed on their turn. Players 1 and 2 draw with %d points",points[0])
+				fmt.Printf("Both Players have passed on their turn. Players 1 and 2 draw with %d points", points[0])
 				return
 			}
 			if draw == false {
@@ -47,7 +49,8 @@ func Player_Selection(player int) {
 				return
 			}
 		}
-
+	}
+	
 
 	// Switch player state
 	if player == 1 {
