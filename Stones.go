@@ -75,7 +75,8 @@ func main() {
 	fmt.Println("If you wish to skip your turn, type 'pass'")
 	fmt.Println("Once both players skip their turns or no more moves are available, the game ends")
 	fmt.Println("Good luck!")
-	
+
+	playing = true
 	PopulateNewBoard()
 	for playing {
 		Player_Selection()
