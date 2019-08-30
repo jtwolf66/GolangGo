@@ -39,6 +39,7 @@ func Player_Selection(player int) {
 	// Check if both players have skipped their turn, ending the game
 	if strings.HasPrefix(strings.ToLower(input), "pass") {
 		if passed_turn == true {
+			playing = false
 			draw, vic, points := Check_Points()
 			if draw == true {
 				fmt.Printf("Both Players have passed on their turn. Players 1 and 2 draw with %d points", points[0])
@@ -49,6 +50,13 @@ func Player_Selection(player int) {
 				return
 			}
 		}
+	}
+
+	xmove, ymove := AlphToBoard(input)
+	if ValidMove(xmove,ymove) {
+		board[xmove][ymove] = player
+		passed_turn = false
+		Check_Captures()
 	}
 
 
