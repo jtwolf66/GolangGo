@@ -31,23 +31,6 @@ func GenerateBoard() Board {
 	return board
 }
 
-func (b Board) ClearBoard() {
-	b = Board {
-		{0,0,0,0,0,0,0,0,0,0,0,0,0} ,
-		{0,0,0,0,0,0,0,0,0,0,0,0,0} ,
-		{0,0,0,0,0,0,0,0,0,0,0,0,0} ,
-		{0,0,0,0,0,0,0,0,0,0,0,0,0} ,
-		{0,0,0,0,0,0,0,0,0,0,0,0,0} ,
-		{0,0,0,0,0,0,0,0,0,0,0,0,0} ,
-		{0,0,0,0,0,0,0,0,0,0,0,0,0} ,
-		{0,0,0,0,0,0,0,0,0,0,0,0,0} ,
-		{0,0,0,0,0,0,0,0,0,0,0,0,0} ,
-		{0,0,0,0,0,0,0,0,0,0,0,0,0} ,
-		{0,0,0,0,0,0,0,0,0,0,0,0,0} ,
-		{0,0,0,0,0,0,0,0,0,0,0,0,0} ,
-		{0,0,0,0,0,0,0,0,0,0,0,0,0}}
-	return
-}
 
 func (b Board) Str_Form() string {
 	piece_dict := map[int]string{
@@ -128,12 +111,12 @@ func (board Board) ValidMove(x, y int) bool {
 	return true
 }
 
-func (board Board) RemoveStone(x, y int) {
+func (board *Board) RemoveStone(x, y int) {
 	board[x][y] = 0
 }
 
 
-func (board Board) PlayerMove(player CurrentPlayer, x int, y int ) {
+func (board *Board) PlayerMove(player int, x int, y int ) {
 	if board.ValidMove(x, y) == false {
 		fmt.Println("Choose a Valid Move")
 		board.Player_Selection(player)
@@ -180,7 +163,7 @@ func AlphToBoard(alpha_input string) ([2]int){
 	h, _ := horizontal[strings.ToLower(string(temp[0]))]
 	v, _ := vertical[strings.ToLower(string(temp[1]))]
 	var pos [2]int
-	pos[0] = h
-	pos[1] = v
+	pos[1] = h
+	pos[0] = v
 	return pos
 }

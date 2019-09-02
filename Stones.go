@@ -9,7 +9,7 @@ import (
 
 var playing bool
 
-type CurrentPlayer int
+var player int
 
 type Neighborhood struct{
 	Type []int
@@ -18,8 +18,8 @@ type Neighborhood struct{
 
 type PosList [][2]int
 
-func (player CurrentPlayer) Opponent() CurrentPlayer {
-	var opponent CurrentPlayer
+func Opponent(player int) int {
+	var opponent int
 	if player == 1 {
 		opponent = 2
 	}
@@ -29,17 +29,18 @@ func (player CurrentPlayer) Opponent() CurrentPlayer {
 	return opponent
 }
 
-func (player_turn CurrentPlayer) SwitchPlayer() {
+func SwitchPlayer(player_turn int) int {
+	var newplayer int
 	if player_turn == 1 {
-		player_turn = 2
+		newplayer = 2
 	}
 	if player_turn == 2 {
-		player_turn = 1
+		newplayer = 1
 	}
-	return
+	return newplayer
 }
 
-func (board Board) GetNeighbors(x int, y int) Neighborhood {
+func (board *Board) GetNeighbors(x int, y int) Neighborhood {
 	/*
 	Returns neighbors in the form (Ltype,Rtype,Utype,Dtype),((Lx,Ly),(Rx,Ry),(Ux,Uy),(Dx,Dy))
 	Type options:
@@ -95,7 +96,7 @@ func (board Board) GetNeighbors(x int, y int) Neighborhood {
 	*/
 	return neighbors
 }
-func (board Board) Get_Liberties(player CurrentPlayer, x int, y int, nodes PosList) (PosList,PosList) {
+func (board *Board) Get_Liberties(player int, x int, y int, nodes PosList) (PosList,PosList) {
 	var posl PosList
 	var pos [2]int
 
@@ -125,12 +126,12 @@ func (board Board) Get_Liberties(player CurrentPlayer, x int, y int, nodes PosLi
 	return posl, nodes
 }
 
-func (board Board) Check_Captures(player CurrentPlayer ,x int ,y int) {
+func (board *Board) Check_Captures(player int ,x int ,y int) {
 	nbrs := board.GetNeighbors(x,y)
 	for i := 0; i < len(nbrs.Type); i++ {
-		if nbrs.Type[i] == int(player.Opponent()) {
+		if nbrs.Type[i] == int(Opponent(player)) {
 			var nodes PosList
-			lib, connected := board.Get_Liberties(player.Opponent(),nbrs.Pos[i][0],nbrs.Pos[i][1], nodes)
+			lib, connected := board.Get_Liberties(Opponent(player),nbrs.Pos[i][0],nbrs.Pos[i][1], nodes)
 			if len(lib) == 0 {
 				for i := 0; i < len(nodes); i++ {
 					board.RemoveStone(connected[i][0],connected[i][1])
@@ -150,7 +151,7 @@ func (board Board) Check_Points() (bool, [2] int, [2] int) {
 	return
 }
 */
-func (board Board) Player_Selection(player CurrentPlayer) {
+func (board *Board) Player_Selection(player int) int {
 	// Listens for moves, checks captures, switches player
 
 	board.Print_Str_Form()
@@ -163,7 +164,7 @@ func (board Board) Player_Selection(player CurrentPlayer) {
 	if strings.HasPrefix(strings.ToLower(input), "quit") {
 		playing = false
 		fmt.Printf("Player %d resigns. Opponent wins!", player)
-		return
+		return 3
 	}
 	// Check if both players have skipped their turn, ending the game
 	if strings.HasPrefix(strings.ToLower(input), "pass") {
@@ -187,8 +188,8 @@ func (board Board) Player_Selection(player CurrentPlayer) {
 
 
 	// Switch player state
-	player.SwitchPlayer()
-	return
+	player = SwitchPlayer(player)
+	return player
 }
 
 
@@ -199,10 +200,10 @@ func main() {
 	fmt.Println("Once both players skip their turns or no more moves are available, the game ends")
 	fmt.Println("Good luck!")
 
-	var player CurrentPlayer = 1
+	var player int = 1
 	board := GenerateBoard()
 	playing = true
 	for playing {
-		board.Player_Selection(player)
+		player = board.Player_Selection(player)
 	}
 }
