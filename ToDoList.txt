@@ -1,0 +1,9 @@
+Thoroughly comment code
+Fix misalignment of 2digit board segments
+Fix captures
+add scoring algorithm
+
+Possible additions:
+create network play
+add/train ai agents
+add ability to save matches
