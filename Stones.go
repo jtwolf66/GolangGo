@@ -96,10 +96,10 @@ func (board *Board) GetNeighbors(x int, y int) Neighborhood {
 	*/
 	return neighbors
 }
-func (board *Board) Get_Liberties(player int, x int, y int, nodes PosList) (PosList,PosList) {
+func (board *Board) Get_Liberties(player int, x int, y int) (PosList,PosList) {
 	var posl PosList
 	var pos [2]int
-
+	var nodes PosList
 	// Add node to collection.
 	var currnode [2]int
 	currnode[0] = x
@@ -115,7 +115,7 @@ func (board *Board) Get_Liberties(player int, x int, y int, nodes PosList) (PosL
 			posl = append(posl, pos)
 			}
 		if nbrs.Type[i] == int(player) {
-			sol, nds := board.Get_Liberties(player, x, y,nodes)
+			sol, nds := board.Get_Liberties(player, x, y)
 			for i := 0; i<len(sol); i++ {
 				posl = append(posl, sol[i])
 				nodes = append(nodes,nds[i])
@@ -130,10 +130,9 @@ func (board *Board) Check_Captures(player int ,x int ,y int) {
 	nbrs := board.GetNeighbors(x,y)
 	for i := 0; i < len(nbrs.Type); i++ {
 		if nbrs.Type[i] == int(Opponent(player)) {
-			var nodes PosList
-			lib, connected := board.Get_Liberties(Opponent(player),nbrs.Pos[i][0],nbrs.Pos[i][1], nodes)
+			lib, connected := board.Get_Liberties(Opponent(player),nbrs.Pos[i][0],nbrs.Pos[i][1])
 			if len(lib) == 0 {
-				for i := 0; i < len(nodes); i++ {
+				for i := 0; i < len(connected); i++ {
 					board.RemoveStone(connected[i][0],connected[i][1])
 				}
 
